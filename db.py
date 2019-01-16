@@ -9,13 +9,17 @@ def connectToDatabase():
   conn = connect(
     host='localhost',
     database='parki',
-    user='postgres',
-    password='postgres'
+    user='noud',
+    password='test1234'
   )
   cur = conn.cursor()
 
   print('PostgreSQL database version:')
   cur.execute('SELECT version()')
+
+
+  print('Available tables:')
+  cur.execute('SELECT * FROM information_schema.tables')
 
   db_version = cur.fetchone()
   print(db_version)
