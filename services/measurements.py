@@ -1,19 +1,27 @@
 from flask import Blueprint, jsonify, request, Response
 from db import connection
+import psycopg2.extras
 import sys
 sys.path.append("..")
 
 measurements = Blueprint('measurements', __name__)
 
-cur = connection.cursor()
+cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 
 @measurements.route('/measurements')
 def index():
-  return jsonify({
-    'message': 'All measurements',
-    'success': True,
-  })
+
+    command = 'SELECT * FROM meting'
+
+    cur.execute(command)
+    measurements = cur.fetchall()
+
+    return jsonify({
+        'message': 'Alle metingen',
+        'success': True,
+        'measurements': measurements
+    })
 
 
 @measurements.route('/measurements/add', methods=['POST'])
@@ -45,6 +53,6 @@ def post():
     connection.commit()
 
     return jsonify({
-      'message': 'Succesfully posted measurement',
-      'success': True,
+        'message': 'Succesfully posted measurement',
+        'success': True,
     })
