@@ -5,36 +5,46 @@ sys.path.append("..")
 
 measurements = Blueprint('measurements', __name__)
 
+cur = connection.cursor()
+
+
 @measurements.route('/measurements')
 def index():
-  print('connection: ', connection)
-  cur = connection.cursor()
-  print('cursor: ', cur)
-
-  cur.execute('')
-  personen = cur.fetchall()
-  print('personen: ',personen)
-
   return jsonify({
-    'message': 'All measurements'
+    'message': 'All measurements',
+    'success': True,
   })
 
 
 @measurements.route('/measurements/add', methods=['POST'])
 def post():
   if request.method == 'POST':
-    cur.execute('''
-      INSERT INTO measurements (tilt, created, userId)
-      VALUES (value1, value2, value3)
-    ''')
+    print(request.json)
 
+    command = '''
+        INSERT INTO meting (
+            "xposition",
+            "yposition",
+            "zposition",
+            "xacceleration",
+            "yacceleration",
+            "zacceleration"
+        )
+        VALUES ({},{},{},{},{},{})
+        '''.format(
+            request.json["xPosition"],
+            request.json["yPosition"],
+            request.json["zPosition"],
+            request.json["xAcceleration"],
+            request.json["yAcceleration"],
+            request.json["zAcceleration"]
+            )
+
+    cur.execute(command)
+    cur.close()
+    connection.commit()
 
     return jsonify({
       'message': 'Succesfully posted measurement',
       'success': True,
-      'tilt': request.json['tilt']
-    })
-  else:
-    return json({
-      'message': 'This type of request is not available on this route.'
     })
