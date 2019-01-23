@@ -26,23 +26,15 @@ def post():
     print(request.json)
 
     command = '''
-        INSERT INTO meting (
-            "xposition",
-            "yposition",
-            "zposition",
-            "xacceleration",
-            "yacceleration",
-            "zacceleration"
+        INSERT INTO trillingen (
+          "aantaltrillingen",
+          "patientid"
         )
-        VALUES ({},{},{},{},{},{})
+        VALUES ({},{})
         '''.format(
-            request.json["xPosition"],
-            request.json["yPosition"],
-            request.json["zPosition"],
-            request.json["xAcceleration"],
-            request.json["yAcceleration"],
-            request.json["zAcceleration"]
-            )
+          request.json['aantaltrillingen'],
+          request.json['patientid']
+        )
 
     cur.execute(command)
     connection.commit()

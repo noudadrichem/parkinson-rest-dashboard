@@ -9,36 +9,32 @@ cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 @activities.route('/activities')
 def index():
+    command = 'SELECT * FROM activity'
+    cur.execute(command)
+    activities = cur.fetchall()
+
     return jsonify({
-        'message': 'Sta of lig je?',
+        'message': 'Alle metingen',
         'success': True,
+        'activities': activities
     })
 
 
 @activities.route('/activities/add', methods=['POST'])
 def post():
   if request.method == 'POST':
-    print('*******************')
-    print(request.json['staje'])
-    print('*******************')
+    command = "INSERT INTO activity (staje, patientid) VALUES ('{}', {})".format(
+      str(request.json['staje']).upper(),
+      request.json['patientid']
+    )
 
-    value = ''
-    if request.json['staje']:
-        value = 't'
-    else:
-        value = 'f'
-
-    command = 'INSERT INTO activity (staje) VALUES ({})'.format(value)
-
-    print('*******************')
-    print(value, command)
-    print('*******************')
-    # cur.execute(command)
-    # connection.commit()
+    print(command)
+    cur.execute(command)
+    connection.commit()
 
     return jsonify({
-        'message': 'Succesfully posted activity',
-        'success': True,
+      'message': 'Succesfully posted activity',
+      'success': True,
     })
 
 
