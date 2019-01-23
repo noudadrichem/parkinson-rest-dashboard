@@ -5,15 +5,11 @@ import sys
 sys.path.append("..")
 
 measurements = Blueprint('measurements', __name__)
-
 cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
 
 @measurements.route('/measurements')
 def index():
-
     command = 'SELECT * FROM meting'
-
     cur.execute(command)
     measurements = cur.fetchall()
 
@@ -49,7 +45,6 @@ def post():
             )
 
     cur.execute(command)
-    cur.close()
     connection.commit()
 
     return jsonify({
