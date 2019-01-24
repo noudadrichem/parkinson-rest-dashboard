@@ -4,10 +4,12 @@ app = Flask(__name__)
 from services.measurements import measurements
 from services.activiteitweergave import activities
 from services.patient import patient
+from services.dokter import dokter
 
 app.register_blueprint(measurements)
 app.register_blueprint(activities)
 app.register_blueprint(patient)
+app.register_blueprint(dokter)
 
 @app.errorhandler(404)
 def not_found(error):
