@@ -1,0 +1,36 @@
+<script>
+import { Line } from 'vue-chartjs'
+
+export default {
+  extends: Line,
+  name: 'Trillingen',
+  props: ['labols', 'datavalues'],
+  methods: {
+    renderDan() {
+      console.log('renderdan')
+      this.renderChart({
+        labels: this.labols,
+        datasets: [
+          {
+            label: 'Trillingen',
+            data: this.datavalues,
+            borderColor: '#1a7feb',
+            backgroundColor: 'rgba(0,0,0,0)',
+          }
+        ]
+      }, {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        backgroundColor: null
+      })
+    }
+  },
+  watch: {
+    datavalues(neww, old) {
+      console.log('trilling props updated ', neww, old)
+      this.renderDan()
+    }
+  }
+}
+</script>
