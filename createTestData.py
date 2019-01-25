@@ -32,7 +32,15 @@ commands = (
   created varchar(255) not null,
   patientid int REFERENCES patient (id)
 );
-'''
+''',
+'''CREATE TABLE IF NOT EXISTS dampening (
+  id BIGSERIAL PRIMARY KEY unique,
+  luchtvochtigheid float not null,
+  created varchar(255) not null,
+  patientid int REFERENCES patient (id)
+);
+''',
+
 )
 
 def initDatabaseTables():
