@@ -31,6 +31,9 @@ export default {
       console.log('trilling props updated ', neww, old)
       this.renderDan()
     }
+  },
+  mounted() {
+    this.renderDan()
   }
 }
 </script>

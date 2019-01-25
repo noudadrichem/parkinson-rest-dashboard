@@ -26,7 +26,7 @@ export default {
       labels: null
     },
     activities: {
-      labels: ['staan', 'liggen'],
+      labels: ['liggen', 'staan'],
       data: []
     }
   }),
@@ -48,28 +48,30 @@ export default {
         }
       ))
     },
+
     updateTrillingenChart(messes) {
       console.log('updateTrillingenChart', messes)
-      // const oldLabels = this.trillingen.labels
-      // const oldData = this.trillingen.datasets[0].data
-      // oldLabels.shift()
+      const SHOW = 10
 
-      const mesChartData = messes.map(mes => mes.aantaltrillingen)
+      const mesChartData = messes
+        .slice(Math.max(messes.length - SHOW, 1))
+        .map(mes => mes.aantaltrillingen)
+
       const newLabels = messes
+        .slice(Math.max(messes.length - SHOW, 1 ))
         .map(mes => new Date(parseInt(mes.created)).toString())
         .map(dateString => dateString.split(' ')[4])
 
       this.$set(this.trillingen, 'labels', newLabels)
       this.$set(this.trillingen, 'data', mesChartData)
     },
+
     updateActivityChart(activities) {
       console.log('updateActivityChart', activities)
       const stajewel = activities.filter(ac => ac.staje)
       const stajeniet = activities.filter(ac => !ac.staje)
       const stajewelCount = stajewel.length
       const stajenietCount = stajeniet.length
-
-
 
       if(stajewelCount > stajenietCount) {
         const stajewelPercent = (stajenietCount / stajewelCount) * 100
@@ -85,7 +87,8 @@ export default {
   },
   mounted() {
     // this.fetchData()
-    window.setInterval(this.fetchData, 5000)
+    const SEC = 30
+    window.setInterval(this.fetchData, (SEC * 1000))
   }
 }
 </script>

@@ -9,14 +9,12 @@ export default {
     renderDan() {
       this.renderChart({
         labels: this.labols,
-        datasets: [
-          {
+        datasets: [{
             label: 'Activities',
             data: this.datavalues,
             borderColor: '#1a7feb',
             backgroundColor: '#1a7feb',
-          }
-        ]
+          }]
       }, {
         responsive: true,
         maintainAspectRatio: false,
@@ -42,6 +40,9 @@ export default {
       console.log('trilling props updated ', neww, old)
       this.renderDan()
     }
+  },
+  mounted() {
+    this.renderDan()
   }
 }
 </script>
