@@ -1,6 +1,8 @@
+import db
+print(db.connection)
+
 commands = (
-'''
-CREATE TABLE patient (
+'''CREATE TABLE IF NOT EXISTS patient (
   id BIGSERIAL PRIMARY KEY unique,
   fullname varchar(255) not null,
   leeftijd int not null,
@@ -9,7 +11,7 @@ CREATE TABLE patient (
   created date not null default now()
 );
 ''',
-'''CREATE TABLE trillingen (
+'''CREATE TABLE IF NOT EXISTS trillingen (
   id BIGSERIAL PRIMARY KEY unique,
   aantaltrillingen float,
   per varchar(255) default 'halfeminuut',
@@ -17,16 +19,14 @@ CREATE TABLE patient (
   patientid int REFERENCES patient (id)
 );
 ''',
-'''
-CREATE TABLE dokter (
+'''CREATE TABLE IF NOT EXISTS dokter (
   id BIGSERIAL PRIMARY KEY unique,
   fullName varchar(255) not null,
   ziekenhuis varchar(255) not null,
   created date not null default now()
 );
 ''',
-'''
-CREATE TABLE activity (
+'''CREATE TABLE IF NOT EXISTS activity (
   id BIGSERIAL PRIMARY KEY unique,
   staje BOOLEAN not null,
   created varchar(255) not null,
@@ -34,3 +34,22 @@ CREATE TABLE activity (
 );
 '''
 )
+
+def initDatabaseTables():
+  cur = db.connection.cursor()
+
+  for command in commands:
+    cur.execute(
+      command
+    )
+    print('''
+    {}
+    '''.format(command))
+
+  cur.close()
+  db.connection.commit()
+
+  print('Succesfully created tables.')
+
+# Use this function to initialize the database tables.
+initDatabaseTables()
