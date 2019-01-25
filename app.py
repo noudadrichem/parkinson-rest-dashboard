@@ -1,11 +1,13 @@
 from flask import Flask, jsonify, request, make_response
-app = Flask(__name__)
+from flask_cors import CORS
 
 from services.measurements import measurements
 from services.activiteitweergave import activities
 from services.patient import patient
 from services.dokter import dokter
 
+app = Flask(__name__)
+CORS(app)
 app.register_blueprint(measurements)
 app.register_blueprint(activities)
 app.register_blueprint(patient)

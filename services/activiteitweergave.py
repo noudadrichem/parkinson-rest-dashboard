@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, request, Response
 from db import connection
 import psycopg2.extras
 import sys
+from tijdje import date_time_milliseconds
+
 sys.path.append("..")
 
 activities = Blueprint('activity', __name__)
@@ -23,9 +25,10 @@ def index():
 @activities.route('/activities/add', methods=['POST'])
 def post():
   if request.method == 'POST':
-    command = "INSERT INTO activity (staje, patientid) VALUES ('{}', {})".format(
+    command = "INSERT INTO activity (staje, patientid, created) VALUES ('{}', {}, {})".format(
       str(request.json['staje']).upper(),
-      request.json['patientid']
+      request.json['patientid'],
+      date_time_milliseconds()
     )
 
     print(command)
