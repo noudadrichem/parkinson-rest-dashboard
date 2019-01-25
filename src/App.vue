@@ -1,11 +1,21 @@
 <template>
   <div id="app" class="container">
     <div class="row">
-      <div class="8 col trillingen">
+      <div class="zeventig col trillingen">
         <Trillingen :labols="trillingen.labels" :datavalues="trillingen.data"/>
       </div>
-      <div class="3 col activities">
+      <div class="dertig col activities">
         <Activities :labols="activities.labels" :datavalues="activities.data"/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="dertig col">
+        <Patient :patient="patient" />
+      </div>
+
+      <div class="zeventig col">
+        <Dampening :labols="dampening.labels" :datavalues="dampening.data"/>
       </div>
     </div>
 
@@ -13,10 +23,13 @@
 </template>
 
 <script>
-const URL = 'http://localhost:5000'
+const URL = 'http://localhost:9094'
+import axios from 'axios'
+
 import Trillingen from './components/Trillingen.vue'
 import Activities from './components/Activities.vue'
-import axios from 'axios'
+import Dampening from './components/Dampening.vue'
+import Patient from './components/Patient.vue'
 
 export default {
   name: 'root',
@@ -28,23 +41,34 @@ export default {
     activities: {
       labels: ['liggen', 'staan'],
       data: []
-    }
+    },
+    dampening: {
+      labels: [],
+      data: []
+    },
+    patient: {}
   }),
   components: {
     Trillingen,
-    Activities
+    Activities,
+    Dampening,
+    Patient
   },
   methods: {
     fetchData() {
       axios.all([
         axios.get(`${URL}/measurements`),
-        axios.get(`${URL}/activities`)
+        axios.get(`${URL}/activities`),
+        axios.get(`${URL}/dampening`),
+        axios.get(`${URL}/patient`),
       ])
       .then(axios.spread(
-        (measurements, activities) => {
+        (measurements, activities, dampening, patient) => {
           const activis = activities.data.activities
           this.updateActivityChart(activities.data.activities)
           this.updateTrillingenChart(measurements.data.measurements)
+          this.updateDampeningChart(dampening.data.dampening)
+          this.$set(this, 'patient', patient.data.patients[0])
         }
       ))
     },
@@ -83,28 +107,23 @@ export default {
         this.$set(this.activities.data, 1, (stajenietPercent))
         this.$set(this.activities.data, 0, (100 - stajenietPercent))
       }
+    },
+
+    updateDampeningChart(dampenings) {
+      const damps = dampenings.map(d => d.luchtvochtigheid)
+      const newLabels = dampenings
+        .slice(Math.max(dampenings.length - 10, 1 ))
+        .map(mes => new Date(parseInt(mes.created)).toString())
+        .map(dateString => dateString.split(' ')[4])
+
+      this.$set(this.dampening, 'data', damps)
+      this.$set(this.dampening, 'labels', newLabels)
     }
   },
   mounted() {
-    // this.fetchData()
-    const SEC = 30
+    this.fetchData()
+    const SEC = 5
     window.setInterval(this.fetchData, (SEC * 1000))
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.container {
-  max-width: 1184px;
-  padding: 8px 24px;
-  width: 100%;
-  margin-left: auto;
-  margin: auto;
-}
-</style>

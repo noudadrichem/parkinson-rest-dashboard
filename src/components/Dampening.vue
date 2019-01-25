@@ -3,7 +3,7 @@ import { Line } from 'vue-chartjs'
 
 export default {
   extends: Line,
-  name: 'Trillingen',
+  name: 'Dampenings',
   props: ['labols', 'datavalues'],
   methods: {
     renderDan() {
@@ -12,7 +12,7 @@ export default {
         labels: this.labols,
         datasets: [
           {
-            label: 'Trillingen',
+            label: 'Luchtvochtigheid',
             data: this.datavalues,
             borderColor: '#1a7feb',
             backgroundColor: 'rgba(0,0,0,0)',
@@ -30,11 +30,6 @@ export default {
               max: 100,
               beginAtZero: true,
               stepSize: 5
-            }
-          }],
-          xAxes: [{
-            ticks: {
-              min: 10,
             }
           }]
         }
