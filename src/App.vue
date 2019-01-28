@@ -22,7 +22,7 @@
 </template>
 
 <script>
-const URL = 'http://192.168.42.1:9094'
+const URL = 'http://nontwikkel.nl:9094'
 import axios from 'axios'
 
 import Trillingen from './components/Trillingen.vue'
@@ -96,14 +96,23 @@ export default {
       const stajewelCount = stajewel.length
       const stajenietCount = stajeniet.length
 
+      const procent = (wat,waarvan) => (wat / activities.length) * 100
+      console.log({
+        stajewelCount,
+        stajenietCount,
+        stajewelPercent: procent(stajenietCount, stajewelCount),
+        stajenietPercent: procent(stajewelCount, stajenietCount)
+      })
+
       if(stajewelCount > stajenietCount) {
-        const stajewelPercent = (stajenietCount / stajewelCount) * 100
+        const stajewelPercent = procent(stajenietCount, stajewelCount)
+        console.log({ stajewelPercent })
         this.$set(this.activities.data, 0, (stajewelPercent))
         this.$set(this.activities.data, 1, (100 - stajewelPercent))
       } else {
-        const stajenietPercent = (stajewelCount / stajenietCount) * 100
-
-        this.$set(this.activities.data, 1, (stajenietPercent))
+        const stajenietPercent = procent(stajewelCount, stajenietCount)
+        console.log({ stajenietPercent})
+        this.$set(this.activities.data, 1, stajenietPercent)
         this.$set(this.activities.data, 0, (100 - stajenietPercent))
       }
     },
