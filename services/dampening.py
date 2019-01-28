@@ -35,7 +35,7 @@ def post():
           "patientid",
           "created"
         )
-        VALUES ({},{},{})
+        VALUES ({},{},'{}')
         '''.format(
           request.json['luchtvochtigheid'],
           request.json['patientid'],

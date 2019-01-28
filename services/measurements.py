@@ -8,7 +8,7 @@ sys.path.append("..")
 
 measurements = Blueprint('measurements', __name__)
 cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
+2
 @measurements.route('/measurements')
 def index():
     command = 'SELECT * FROM trillingen'
@@ -33,7 +33,7 @@ def post():
           "patientid",
           "created"
         )
-        VALUES ({},{},{})
+        VALUES ({},{},'{}')
         '''.format(
           request.json['aantaltrillingen'],
           request.json['patientid'],

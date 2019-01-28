@@ -25,7 +25,7 @@ def index():
 @activities.route('/activities/add', methods=['POST'])
 def post():
   if request.method == 'POST':
-    command = "INSERT INTO activity (staje, patientid, created) VALUES ('{}', {}, {})".format(
+    command = "INSERT INTO activity (staje, patientid, created) VALUES ('{}', {}, '{}')".format(
       str(request.json['staje']).upper(),
       request.json['patientid'],
       date_time_milliseconds()
