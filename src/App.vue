@@ -18,12 +18,11 @@
         <Dampening :labols="dampening.labels" :datavalues="dampening.data"/>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-const URL = 'http://localhost:9094'
+const URL = 'http://192.168.42.1:9094'
 import axios from 'axios'
 
 import Trillingen from './components/Trillingen.vue'
