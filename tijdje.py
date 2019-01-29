@@ -1,5 +1,7 @@
 import time, datetime
 
+# THIS IS NOT MY CODE:
+
 def now_milliseconds():
    return int(time.time() * 1000)
 
@@ -15,12 +17,6 @@ def date_time_milliseconds(date_time_obj=datetime.datetime.utcnow()):
 
 # reference: time.mktime() will
 # Convert a time tuple in local time to seconds since the Epoch.
-
-mstimeone = now_milliseconds()
-
-# mstimetwo = date_time_milliseconds(datetime.datetime.utcnow())
-
-
 
 # source:
 #https://stackoverflow.com/questions/24829726/python-function-to-return-javascript-date-gettime

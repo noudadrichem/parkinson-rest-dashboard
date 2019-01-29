@@ -1,7 +1,9 @@
 from flask import Blueprint, jsonify, request, Response
-from db import connection
-import psycopg2.extras
 import sys
+import psycopg2.extras
+
+from db import connection
+from actions import fetchFromDatabse
 sys.path.append("..")
 
 patient = Blueprint('patient', __name__)
@@ -9,41 +11,34 @@ cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 @patient.route('/patient')
 def index():
-    command = 'SELECT * FROM patient'
-    cur.execute(command)
-    patient = cur.fetchall()
-
-    return jsonify({
-        'message': 'Alle metingen',
-        'success': True,
-        'patients': patient
-    })
+  return jsonify({
+    'message': 'Alle metingen',
+    'success': True,
+    'patients': fetchFromDatabse('patient')
+  })
 
 
 @patient.route('/patient/add', methods=['POST'])
 def addPatient():
-  print(request.json)
+  if request.method == 'POST':
+    command = '''
+      INSERT INTO patient (
+        "fullname",
+        "leeftijd",
+        "initialdoses",
+        "bodymass"
+      ) VALUES ('{}',{},'{}',{})
+      '''.format(
+        request.json['fullName'],
+        request.json['leeftijd'],
+        request.json['initialDoses'],
+        request.json['bodyMass']
+      )
 
-  command = '''
-    INSERT INTO patient (
-      "fullname",
-      "leeftijd",
-      "initialdoses",
-      "bodymass"
-    )
-    VALUES ('{}',{},'{}',{})
-    '''.format(
-      request.json['fullName'],
-      request.json['leeftijd'],
-      request.json['initialDoses'],
-      request.json['bodyMass']
-    )
+    cur.execute(command)
+    connection.commit()
 
-  print(command)
-  cur.execute(command)
-  connection.commit()
-
-  return jsonify({
-    'message': 'succesfully added patient'
-  })
+    return jsonify({
+      'message': 'succesfully added patient'
+    })
 

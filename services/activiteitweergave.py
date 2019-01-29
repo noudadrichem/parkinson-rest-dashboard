@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify, request, Response
-from db import connection
 import psycopg2.extras
 import sys
-from tijdje import date_time_milliseconds
 
+from tijdje import date_time_milliseconds
+from db import connection
+from actions import fetchFromDatabse
 sys.path.append("..")
 
 activities = Blueprint('activity', __name__)
@@ -11,16 +12,11 @@ cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
 @activities.route('/activities')
 def index():
-    command = 'SELECT * FROM activity'
-    cur.execute(command)
-    activities = cur.fetchall()
-
-    return jsonify({
-        'message': 'Alle metingen',
-        'success': True,
-        'activities': activities
-    })
-
+  return jsonify({
+    'message': 'Alle metingen',
+    'success': True,
+    'activities': fetchFromDatabse('activity')
+  })
 
 @activities.route('/activities/add', methods=['POST'])
 def post():
@@ -31,7 +27,6 @@ def post():
       date_time_milliseconds()
     )
 
-    print(command)
     cur.execute(command)
     connection.commit()
 
@@ -39,15 +34,3 @@ def post():
       'message': 'Succesfully posted activity',
       'success': True,
     })
-
-
-
-# {
-#     aantaltrillingen: 10,
-#     per: 'halfeminuut'
-# }
-
-# {
-#     staje: True,
-#     per: 'halfeminuut'
-# }

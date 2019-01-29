@@ -1,5 +1,4 @@
 import db
-print(db.connection)
 
 commands = (
 '''CREATE TABLE IF NOT EXISTS patient (
@@ -60,4 +59,4 @@ def initDatabaseTables():
   print('Succesfully created tables.')
 
 # Use this function to initialize the database tables.
-initDatabaseTables()
+# initDatabaseTables()
