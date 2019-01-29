@@ -1,12 +1,13 @@
 from psycopg2 import connect
+from config import HOST, DATABASE ,USER ,PASSWORD
 
 def connectToDatabase():
   print('****Connecting to database****')
   conn = connect(
-    host='postgres',
-    database='parki',
-    user='noud',
-    password='test1234'
+    host=HOST,
+    database=DATABASE,
+    user=USER,
+    password=PASSWORD
   )
   cur = conn.cursor()
 
