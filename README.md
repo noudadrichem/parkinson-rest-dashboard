@@ -2,9 +2,12 @@
 > This is made as a school project for Hogeschool Utrecht
 
 API is in the master branch
+
 FRONTEND can be found in the fe-dashboard branche
 
-Change the config.
+Change the config in config.py
+
+
 Easy to run via docker
 
 ```bash
