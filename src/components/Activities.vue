@@ -22,7 +22,8 @@ export default {
         scales: {
           yAxes: [{
             ticks: {
-              suggestedMax: 100,
+              min: 0,
+              max: 100,
               callback: v => `${v}%`
           },
           scaleLabel: {
