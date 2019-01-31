@@ -7,7 +7,6 @@ export default {
   props: ['labols', 'datavalues'],
   methods: {
     renderDan() {
-      console.log('renderdan')
       this.renderChart({
         labels: this.labols,
         datasets: [
@@ -27,7 +26,7 @@ export default {
           yAxes: [{
             ticks: {
               min: 0,
-              max: 100,
+              suggestedMax: 100,
               beginAtZero: true,
               stepSize: 5
             }

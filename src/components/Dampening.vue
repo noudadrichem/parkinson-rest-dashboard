@@ -1,13 +1,11 @@
 <script>
 import { Line } from 'vue-chartjs'
-
 export default {
   extends: Line,
   name: 'Dampenings',
   props: ['labols', 'datavalues'],
   methods: {
     renderDan() {
-      console.log('renderdan')
       this.renderChart({
         labels: this.labols,
         datasets: [
@@ -26,11 +24,14 @@ export default {
         scales: {
           yAxes: [{
             ticks: {
-              min: 0,
-              max: 100,
+              suggestedMax: 100,
               beginAtZero: true,
               stepSize: 5
-            }
+            },
+            scaleLabel: {
+              display: true,
+              labelString: 'Percentage'
+            },
           }]
         }
       })
